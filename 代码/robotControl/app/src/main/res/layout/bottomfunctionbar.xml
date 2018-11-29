@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/set_icon"
+            android:background="@drawable/seticon"
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/function_icon"
+            android:background="@drawable/functionicon"
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5">
+
+        <RelativeLayout
+            android:id="@+id/controller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:src="@drawable/controller"
+                android:layout_width="90dp"
+                android:layout_height="90dp" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/specificinfo" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/specific_icon"
+            android:background="@drawable/specificicon"
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/close_specific_icon"
+            android:background="@drawable/closespecificicon"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/controller_icon"
+            android:background="@drawable/controllericon"
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

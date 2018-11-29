@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+    android:background="#e0ffff">
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:textColor="#04bebd"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        >
+
+
+        <TextView
+            android:id="@+id/robot_name"
+            android:textSize="20sp"
+            android:textColor="#04bebd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/show_all_robots"
+            android:background="@drawable/downicon"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/close_all_robots"
+            android:visibility="gone"
+            android:background="@drawable/upicon"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

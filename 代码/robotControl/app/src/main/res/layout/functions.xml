@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="gone"
+    android:id="@+id/functions"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/poi_icon"
+                android:background="@drawable/poiicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="POI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <Button
+                android:id="@+id/agv_icon"
+                android:background="@drawable/agvicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="AGV"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/roam_icon"
+                android:background="@drawable/roamicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="ROAM"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/charge_icon"
+                android:background="@drawable/chargeicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="充电"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/create_map_icon"
+                android:background="@drawable/createmapicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="构建地图"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/restrict_icon"
+                android:background="@drawable/restricticon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="修改限制层"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/anchor_icon"
+                android:background="@drawable/anchoricon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="修改锚点"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/choose_map_icon"
+                android:background="@drawable/choosemap"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="选择地图"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/server_icon"
+                android:background="@drawable/servericon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#ccc"
+                android:text="选择服务器"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    <Button
+        android:layout_marginBottom="10dp"
+        android:id="@+id/close_functions_btn"
+        android:text="关闭"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
