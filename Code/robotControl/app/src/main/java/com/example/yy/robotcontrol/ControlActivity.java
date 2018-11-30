@@ -1,13 +1,11 @@
 package com.example.yy.robotcontrol;
 
-import android.os.Message;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -63,6 +61,15 @@ public class ControlActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
+        setIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(ControlActivity.this, Set.class);
+                startActivity(intent);
+            }
+        });
+
         controllerIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +118,6 @@ public class ControlActivity extends AppCompatActivity {
         closeFunctionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("YY");
                 functions.setVisibility(View.GONE);
             }
         });
