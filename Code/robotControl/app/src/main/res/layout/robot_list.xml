@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:visibility="gone"
     android:id="@+id/robot_list"
-    android:layout_width="match_parent" android:layout_height="100dp"
+    android:layout_width="match_parent" android:layout_height="230dp"
     android:background="#fff">
 
     <ListView
