@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.net.URI;
+
+
 public class SelectServer extends AppCompatActivity {
     private ListView listView;
     private Button button;
@@ -58,6 +61,7 @@ public class SelectServer extends AppCompatActivity {
         builder.setIcon(android.R.drawable.ic_dialog_alert);
 
         final EditText editText = new EditText(SelectServer.this);
+        editText.setHint("192.168.43.177");
         editText.setHint("请输入IP地址");
         builder.setView(editText);
 
@@ -67,6 +71,7 @@ public class SelectServer extends AppCompatActivity {
                 ip_address = editText.getText().toString();
 
                 Intent intent = new Intent();
+                intent.putExtra("IP", URI.create("http://" + editText.getText().toString() + ":11311"));
                 intent.setClass(SelectServer.this, ControlActivity.class);
                 startActivity(intent);
             }

@@ -12,7 +12,21 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-public class ControlActivity extends AppCompatActivity {
+import org.ros.android.RosActivity;
+import org.ros.concurrent.CancellableLoop;
+import org.ros.namespace.GraphName;
+import org.ros.node.ConnectedNode;
+import org.ros.node.Node;
+import org.ros.node.NodeConfiguration;
+import org.ros.node.NodeMain;
+import org.ros.node.NodeMainExecutor;
+import org.ros.node.topic.Publisher;
+
+import java.net.URI;
+
+import std_msgs.String;
+
+public class ControlActivity extends RosActivity {
     private Button showAllRobotsIcon;
     private Button closeAllRobotsIcon;
     private Button updateIcon;
@@ -31,13 +45,21 @@ public class ControlActivity extends AppCompatActivity {
     private LinearLayout robotList;
 
     private ListView listView;
-    private String[] robots = {
+
+    private java.lang.String[] robots = {
             "Robot1", "Robot2", "Robot3", "Robot4", "Robot5", "Robot6", "Robot7"
     };
+
+//    在onCreate之前就执行了
+    protected ControlActivity() {
+        super("ros_test", "ros_test"); // 这里是ROS_MASTER_URI
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        super.nodeMainExecutorService.setMasterUri(IP);
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
@@ -67,8 +89,8 @@ public class ControlActivity extends AppCompatActivity {
         robotList = (LinearLayout) findViewById(R.id.robot_list);
 
 
-        ArrayAdapter<String> adapter = new
-                ArrayAdapter<String>(ControlActivity.this, android.R.layout.simple_list_item_1, robots);
+        ArrayAdapter<java.lang.String> adapter = new
+                ArrayAdapter<java.lang.String>(ControlActivity.this, android.R.layout.simple_list_item_1, robots);
         listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 
@@ -85,26 +107,27 @@ public class ControlActivity extends AppCompatActivity {
         controllerIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (controller.getVisibility() == View.GONE){
+                if (controller.getVisibility() == View.GONE) {
                     controller.setVisibility(View.VISIBLE);
                     specificInfo.setVisibility(View.GONE);
                     closeSpecificIcon.setVisibility(View.GONE);
                     specificIcon.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     controller.setVisibility(View.GONE);
                 }
             }
         });
 
         specificIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    specificIcon.setVisibility(View.GONE);
-                    closeSpecificIcon.setVisibility(View.VISIBLE);
-                    specificInfo.setVisibility(View.VISIBLE);
-                    controller.setVisibility(View.GONE);
-            };
+            @Override
+            public void onClick(View v) {
+                specificIcon.setVisibility(View.GONE);
+                closeSpecificIcon.setVisibility(View.VISIBLE);
+                specificInfo.setVisibility(View.VISIBLE);
+                controller.setVisibility(View.GONE);
+            }
+
+            ;
         });
 
         closeSpecificIcon.setOnClickListener(new View.OnClickListener() {
@@ -151,5 +174,48 @@ public class ControlActivity extends AppCompatActivity {
                 robotList.setVisibility(View.GONE);
             }
         });
+    }
+
+
+    @Override
+    protected void init(NodeMainExecutor nodeMainExecutor) {
+        URI IP = (URI) getIntent().getSerializableExtra("IP");
+        NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
+        nodeConfiguration.setMasterUri(IP);
+        nodeMainExecutor.execute(new NodeMain() {
+            @Override
+            public GraphName getDefaultNodeName() {
+                return GraphName.of("ros_test");
+            }
+
+            @Override
+            public void onStart(ConnectedNode connectedNode) {
+                final Publisher<String> pub = connectedNode.newPublisher("/test", String._TYPE);
+                connectedNode.executeCancellableLoop(new CancellableLoop() {
+                    @Override
+                    protected void loop() throws InterruptedException {
+                        std_msgs.String msg = pub.newMessage();
+                        msg.setData("Hello world!");
+                        pub.publish(msg);
+                        Thread.sleep(1000);
+                    }
+                });
+            }
+
+            @Override
+            public void onShutdown(Node node) {
+
+            }
+
+            @Override
+            public void onShutdownComplete(Node node) {
+
+            }
+
+            @Override
+            public void onError(Node node, Throwable throwable) {
+
+            }
+        }, nodeConfiguration);
     }
 }
