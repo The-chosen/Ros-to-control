@@ -210,15 +210,22 @@ public class ControlActivity extends RosActivity {
 //                        pub.publish(msg);
 //                        Thread.sleep(1000);
                         geometry_msgs.Twist twist = pub.newMessage(); // Init a msg variable that of the publisher type
-                        sequenceNumber++;
-
-                        if (sequenceNumber % 3 == 0) {          // Every 3 executions of the loop (aprox. 3*1000ms = 3 sec)
-                            twist.getAngular().setZ(Math.PI/2);   // Steer the turtle left
-                        }
-                        else{
-                            twist.getLinear().setX(2);            // In the meantime keeps going foward
-                        }
-
+//                        走拐角
+//                        sequenceNumber++;
+//
+//                        if (sequenceNumber % 3 == 0) {          // Every 3 executions of the loop (aprox. 3*1000ms = 3 sec)
+//                            twist.getAngular().setZ(Math.PI/2);   // Steer the turtle left
+//                        }
+//                        else{
+//                            twist.getLinear().setX(2);            // In the meantime keeps going foward
+//                        }
+//                        走圆形：
+                        twist.getLinear().setX(2);
+                        twist.getLinear().setY(0);
+                        twist.getLinear().setZ(0);
+                        twist.getAngular().setX(0);
+                        twist.getAngular().setY(0);
+                        twist.getAngular().setZ(1.8);
                         pub.publish(twist);       // Publish the message (if running use rostopic list to see the message)
 
                         Thread.sleep(1000);             // Sleep for 1000 ms = 1 sec
