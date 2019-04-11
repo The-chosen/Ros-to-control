@@ -63,7 +63,7 @@ public class ControlActivity extends RosActivity {
         super.onCreate(savedInstanceState);
 
 //        测试Shell的！！！！！！！！！！
-        Shell shell = new Shell("192.168.43.90", "yygx", "681609qg");
+        Shell shell = new Shell("", "", "");
         shell.execute("ls");
         ArrayList<java.lang.String> stdout = shell.getStandardOutput();
         for (String str : stdout) {
