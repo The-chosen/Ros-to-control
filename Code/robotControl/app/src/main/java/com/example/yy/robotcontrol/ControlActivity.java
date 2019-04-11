@@ -25,6 +25,7 @@ import org.ros.node.topic.Publisher;
 import java.net.URI;
 
 import std_msgs.String;
+import geometry_msgs.Twist;
 
 public class ControlActivity extends RosActivity {
     private Button showAllRobotsIcon;
@@ -44,6 +45,7 @@ public class ControlActivity extends RosActivity {
     private LinearLayout specificInfo;
     private LinearLayout robotList;
 
+
     private ListView listView;
 
     private java.lang.String[] robots = {
@@ -52,7 +54,7 @@ public class ControlActivity extends RosActivity {
 
 //    在onCreate之前就执行了
     protected ControlActivity() {
-        super("ros_test", "ros_test"); // 这里是ROS_MASTER_URI
+        super("ros_test", "ros_test", URI.create("http://192.168.43.90:11311")); // 这里是ROS_MASTER_URI
     }
 
     @Override
@@ -179,9 +181,10 @@ public class ControlActivity extends RosActivity {
 
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
-        URI IP = (URI) getIntent().getSerializableExtra("IP");
+//        URI IP = (URI) getIntent().getSerializableExtra("IP");
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
-        nodeConfiguration.setMasterUri(IP);
+//        nodeConfiguration.setMasterUri(IP);
+        nodeConfiguration.setMasterUri(getMasterUri());
         nodeMainExecutor.execute(new NodeMain() {
             @Override
             public GraphName getDefaultNodeName() {
@@ -190,14 +193,35 @@ public class ControlActivity extends RosActivity {
 
             @Override
             public void onStart(ConnectedNode connectedNode) {
-                final Publisher<String> pub = connectedNode.newPublisher("/test", String._TYPE);
+                final Publisher<geometry_msgs.Twist> pub = connectedNode.newPublisher("/turtle1/cmd_vel", geometry_msgs.Twist._TYPE);
                 connectedNode.executeCancellableLoop(new CancellableLoop() {
+                    private int sequenceNumber;
+
+                    @Override
+                    protected void setup() {
+                        sequenceNumber = 0;
+                    }
+
+
                     @Override
                     protected void loop() throws InterruptedException {
-                        std_msgs.String msg = pub.newMessage();
-                        msg.setData("Hello world!");
-                        pub.publish(msg);
-                        Thread.sleep(1000);
+//                        std_msgs.String msg = pub.newMessage();
+//                        msg.setData("Hello world!");
+//                        pub.publish(msg);
+//                        Thread.sleep(1000);
+                        geometry_msgs.Twist twist = pub.newMessage(); // Init a msg variable that of the publisher type
+                        sequenceNumber++;
+
+                        if (sequenceNumber % 3 == 0) {          // Every 3 executions of the loop (aprox. 3*1000ms = 3 sec)
+                            twist.getAngular().setZ(Math.PI/2);   // Steer the turtle left
+                        }
+                        else{
+                            twist.getLinear().setX(2);            // In the meantime keeps going foward
+                        }
+
+                        pub.publish(twist);       // Publish the message (if running use rostopic list to see the message)
+
+                        Thread.sleep(1000);             // Sleep for 1000 ms = 1 sec
                     }
                 });
             }
