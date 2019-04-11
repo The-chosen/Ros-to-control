@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,8 +24,8 @@ import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 
 import java.net.URI;
+import java.util.ArrayList;
 
-import std_msgs.String;
 import geometry_msgs.Twist;
 
 public class ControlActivity extends RosActivity {
@@ -60,6 +61,15 @@ public class ControlActivity extends RosActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        测试Shell的！！！！！！！！！！
+        Shell shell = new Shell("192.168.43.90", "yygx", "681609qg");
+        shell.execute("ls");
+        ArrayList<java.lang.String> stdout = shell.getStandardOutput();
+        for (String str : stdout) {
+            Log.d("MainActivity", str);
+        }
+
 
 //        super.nodeMainExecutorService.setMasterUri(IP);
         if (Build.VERSION.SDK_INT >= 21) {

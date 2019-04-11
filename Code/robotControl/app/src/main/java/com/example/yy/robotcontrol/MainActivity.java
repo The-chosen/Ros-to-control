@@ -3,6 +3,9 @@ package com.example.yy.robotcontrol;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,5 +17,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SelectServer.class);
         startActivity(intent);
         finish();
+
+
+
+
+
+
     }
+
+
 }
