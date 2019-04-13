@@ -17,13 +17,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SelectServer.class);
         startActivity(intent);
         finish();
-
-
-
-
-
-
     }
-
-
 }

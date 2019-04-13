@@ -55,19 +55,19 @@ public class ControlActivity extends RosActivity {
 
 //    在onCreate之前就执行了
     protected ControlActivity() {
-        super("ros_test", "ros_test", URI.create("http://192.168.43.90:11311")); // 这里是ROS_MASTER_URI
+        super("ros_test", "ros_test", URI.create("http://172.20.10.2:11311")); // 这里是ROS_MASTER_URI
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        测试Shell的！！！！！！！！！！
-        Shell shell = new Shell("", "", "");
+//        测试Shell
+        Shell shell = new Shell("172.20.10.2", "cui", "990622");
         shell.execute("ls");
         ArrayList<java.lang.String> stdout = shell.getStandardOutput();
         for (String str : stdout) {
-            Log.d("MainActivity", str);
+            Log.d("Shell", str);
         }
 
 
