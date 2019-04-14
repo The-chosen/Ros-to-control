@@ -13,6 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.UIKeyboardInteractive;
+import com.jcraft.jsch.UserInfo;
+
 import org.ros.android.RosActivity;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.namespace.GraphName;
@@ -23,10 +29,15 @@ import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import geometry_msgs.Twist;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ControlActivity extends RosActivity {
     private Button showAllRobotsIcon;
@@ -55,23 +66,13 @@ public class ControlActivity extends RosActivity {
 
 //    在onCreate之前就执行了
     protected ControlActivity() {
-        super("ros_test", "ros_test", URI.create("http://172.20.10.2:11311")); // 这里是ROS_MASTER_URI
+        super("ros_test", "ros_test", URI.create("http://192.168.43.90:11311")); // 这里是ROS_MASTER_URI
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        测试Shell
-        Shell shell = new Shell("172.20.10.2", "cui", "990622");
-        shell.execute("ls");
-        ArrayList<java.lang.String> stdout = shell.getStandardOutput();
-        for (String str : stdout) {
-            Log.d("Shell", str);
-        }
-
-
-//        super.nodeMainExecutorService.setMasterUri(IP);
+        //        super.nodeMainExecutorService.setMasterUri(IP);
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
@@ -195,6 +196,54 @@ public class ControlActivity extends RosActivity {
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
 //        nodeConfiguration.setMasterUri(IP);
         nodeConfiguration.setMasterUri(getMasterUri());
+
+        //        测试Shell的！！！！！！！！！！
+//        Shell shell = new Shell("192.168.43.90", "yygx", "681609qg");
+//        shell.execute("ls");
+//        ArrayList<java.lang.String> stdout = shell.getStandardOutput();
+//        for (String str : stdout) {
+//            Log.d("MainActivity", str + "gggxxx");
+//            System.out.println(str + "gggxxx");
+//        }
+
+
+        try {
+            JSch jSch = new JSch();
+            String host = null;
+
+            Session session = jSch.getSession("yygx", "192.168.43.90", 11311);
+            session.setPassword("681609qg");
+
+            UserInfo ui = new MyUserInfo() {
+                public void showMessage(String message) {
+//                    JOptionPane.showMessageDialog(null, message);
+                }
+
+                public boolean promptYesNo(String message) {
+                    Object[] options = {"yes", "no"};
+//                    int foo=JOptionPane.showOptionDialog(null,
+//                            message,
+//                            "Warning",
+//                            JOptionPane.DEFAULT_OPTION,
+//                            JOptionPane.WARNING_MESSAGE,
+//                            null, options, options[0]);
+                    return true;
+                }
+            };
+
+            session.connect(30000);   // making a connection with timeout.
+
+            Channel channel=session.openChannel("shell");
+            InputStream stream = new ByteArrayInputStream("roscore\n".getBytes());
+            channel.setInputStream(stream);
+            channel.setOutputStream(System.out);
+            channel.connect(3*1000);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
         nodeMainExecutor.execute(new NodeMain() {
             @Override
             public GraphName getDefaultNodeName() {
@@ -259,4 +308,24 @@ public class ControlActivity extends RosActivity {
             }
         }, nodeConfiguration);
     }
+
+//工具类
+    public static abstract class MyUserInfo
+            implements UserInfo, UIKeyboardInteractive {
+        public String getPassword(){ return null; }
+        public boolean promptYesNo(String str){ return false; }
+        public String getPassphrase(){ return null; }
+        public boolean promptPassphrase(String message){ return false; }
+        public boolean promptPassword(String message){ return false; }
+        public void showMessage(String message){ }
+        public String[] promptKeyboardInteractive(String destination,
+                                                  String name,
+                                                  String instruction,
+                                                  String[] prompt,
+                                                  boolean[] echo){
+            return null;
+        }
+    }
 }
+
+
