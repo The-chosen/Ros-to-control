@@ -51,6 +51,10 @@ public class ControlActivity extends RosActivity {
     private Button controllerIcon;
     private Button closeSpecificIcon;
     private Button closeFunctionBtn;
+    private Button controller_up;
+    private Button controller_down;
+    private Button controller_left;
+    private Button controller_right;
 
     private RelativeLayout controller;
     private LinearLayout functions;
@@ -60,6 +64,7 @@ public class ControlActivity extends RosActivity {
 
     private ListView listView;
 
+    private Channel channel;
     private java.lang.String[] robots = {
             "Robot1", "Robot2", "Robot3", "Robot4", "Robot5", "Robot6", "Robot7"
     };
@@ -95,6 +100,10 @@ public class ControlActivity extends RosActivity {
         controllerIcon = (Button) findViewById(R.id.controller_icon);
         closeSpecificIcon = (Button) findViewById(R.id.close_specific_icon);
         closeFunctionBtn = (Button) findViewById(R.id.close_functions_btn);
+        controller_up = (Button) findViewById(R.id.controller_up);
+        controller_down = (Button) findViewById(R.id.controller_down);
+        controller_left = (Button) findViewById(R.id.controller_left);
+        controller_right = (Button) findViewById(R.id.controller_right);
 
         controller = (RelativeLayout) findViewById(R.id.controller);
         functions = (LinearLayout) findViewById(R.id.functions);
@@ -117,6 +126,7 @@ public class ControlActivity extends RosActivity {
             }
         });
 
+//        控制器
         controllerIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,43 +215,76 @@ public class ControlActivity extends RosActivity {
 //            Log.d("MainActivity", str + "gggxxx");
 //            System.out.println(str + "gggxxx");
 //        }
+//
+//此处自启动roscore
+//        try {
+//            JSch jSch = new JSch();
+//            String host = null;
+//
+//            Session session = jSch.getSession("yygx", "192.168.43.90", 11311);
+//            session.setPassword("681609qg");
+//
+//            UserInfo ui = new MyUserInfo() {
+//                public void showMessage(String message) {
+////                    JOptionPane.showMessageDialog(null, message);
+//                }
+//
+//                public boolean promptYesNo(String message) {
+//                    Object[] options = {"yes", "no"};
+////                    int foo=JOptionPane.showOptionDialog(null,
+////                            message,
+////                            "Warning",
+////                            JOptionPane.DEFAULT_OPTION,
+////                            JOptionPane.WARNING_MESSAGE,
+////                            null, options, options[0]);
+//                    return true;
+//                }
+//            };
+//
+//            session.connect(30000);   // making a connection with timeout.
+//
+//            Channel channel=session.openChannel("shell");
+//            InputStream stream = new ByteArrayInputStream("roscore\n".getBytes());
+//            channel.setInputStream(stream);
+//            channel.setOutputStream(System.out);
+//            channel.connect(3*1000);
+//
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+        try{
+            JSch jsch=new JSch();
 
+            String host=null;
 
-        try {
-            JSch jSch = new JSch();
-            String host = null;
-
-            Session session = jSch.getSession("yygx", "192.168.43.90", 11311);
+            Session session=jsch.getSession("yygx", "192.168.43.90", 22);
             session.setPassword("681609qg");
-
-            UserInfo ui = new MyUserInfo() {
-                public void showMessage(String message) {
-//                    JOptionPane.showMessageDialog(null, message);
+            UserInfo ui = new MyUserInfo(){
+                public void showMessage(String message){
                 }
+                public boolean promptYesNo(String message){
 
-                public boolean promptYesNo(String message) {
-                    Object[] options = {"yes", "no"};
-//                    int foo=JOptionPane.showOptionDialog(null,
-//                            message,
-//                            "Warning",
-//                            JOptionPane.DEFAULT_OPTION,
-//                            JOptionPane.WARNING_MESSAGE,
-//                            null, options, options[0]);
                     return true;
                 }
+
             };
+
+            session.setUserInfo(ui);
 
             session.connect(30000);   // making a connection with timeout.
 
-            Channel channel=session.openChannel("shell");
+            channel=session.openChannel("shell");
             InputStream stream = new ByteArrayInputStream("roscore\n".getBytes());
             channel.setInputStream(stream);
-            channel.setOutputStream(System.out);
-            channel.connect(3*1000);
 
-        } catch (Exception e) {
+            channel.setOutputStream(System.out);
+
+            channel.connect(3*1000);
+        }
+        catch(Exception e){
             System.out.println(e);
         }
+
 
 
         nodeMainExecutor.execute(new NodeMain() {
@@ -252,7 +295,16 @@ public class ControlActivity extends RosActivity {
 
             @Override
             public void onStart(ConnectedNode connectedNode) {
+                class Holder {
+                    public double lx;
+                    public double ax;
+                    public int cnt;
+                    public int tempCnt;
+                }
+                final Holder h = new Holder();
                 final Publisher<geometry_msgs.Twist> pub = connectedNode.newPublisher("/turtle1/cmd_vel", geometry_msgs.Twist._TYPE);
+
+
                 connectedNode.executeCancellableLoop(new CancellableLoop() {
                     private int sequenceNumber;
 
@@ -268,7 +320,7 @@ public class ControlActivity extends RosActivity {
 //                        msg.setData("Hello world!");
 //                        pub.publish(msg);
 //                        Thread.sleep(1000);
-                        geometry_msgs.Twist twist = pub.newMessage(); // Init a msg variable that of the publisher type
+                        final geometry_msgs.Twist twist = pub.newMessage(); // Init a msg variable that of the publisher type
 //                        走拐角
 //                        sequenceNumber++;
 //
@@ -279,17 +331,64 @@ public class ControlActivity extends RosActivity {
 //                            twist.getLinear().setX(2);            // In the meantime keeps going foward
 //                        }
 //                        走圆形：
-                        twist.getLinear().setX(2);
-                        twist.getLinear().setY(0);
-                        twist.getLinear().setZ(0);
-                        twist.getAngular().setX(0);
-                        twist.getAngular().setY(0);
-                        twist.getAngular().setZ(1.8);
+//                        twist.getLinear().setX(2);
+//                        twist.getLinear().setY(0);
+//                        twist.getLinear().setZ(0);
+//                        twist.getAngular().setX(0);
+//                        twist.getAngular().setY(0);
+//                        twist.getAngular().setZ(1.8);
+
+
+                        h.cnt++;
+                        final int TIME = 7;
+                        twist.getLinear().setX(h.lx);
+                        twist.getAngular().setZ(h.ax);
+                        if ((h.cnt - h.tempCnt) / TIME == 0 && h.cnt > h.tempCnt) {
+                            h.lx = 0;
+                            h.ax = 0;
+                        }
+
+                        controller_up.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                twist.getLinear().setX(2);
+                                h.lx = 2;
+                                h.tempCnt = h.cnt;
+                            }
+                        });
+                        controller_down.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                twist.getLinear().setX(-2);
+                                h.lx = -2;
+                                h.tempCnt = h.cnt;
+                            }
+                        });
+                        controller_left.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                twist.getAngular().setZ(2);
+                                h.ax = 1.5;
+                                h.tempCnt = h.cnt;
+                            }
+                        });
+                        controller_right.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                twist.getAngular().setZ(-2);
+                                h.ax = -1.5;
+                                h.tempCnt = h.cnt;
+                            }
+                        });
+
+
                         pub.publish(twist);       // Publish the message (if running use rostopic list to see the message)
 
                         Thread.sleep(1000);             // Sleep for 1000 ms = 1 sec
                     }
                 });
+
+
             }
 
             @Override
@@ -325,6 +424,12 @@ public class ControlActivity extends RosActivity {
                                                   boolean[] echo){
             return null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        channel.disconnect();
     }
 }
 
