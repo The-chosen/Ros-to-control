@@ -61,6 +61,7 @@ public class SelectServer extends AppCompatActivity {
                 bundle.putString("serverMAC", info[1]);
                 bundle.putString("IP", intToIp(wi.getIpAddress()));
 
+
                 Intent intent = new Intent();
                 intent.setClass(SelectServer.this, ServerLogin.class);
                 intent.putExtras(bundle);
@@ -75,7 +76,7 @@ public class SelectServer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                initDialog();
-               alertDialog.show();
+                   alertDialog.show();
             }
         });
     }
@@ -103,6 +104,9 @@ public class SelectServer extends AppCompatActivity {
         wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         //已连接wifi信息
         wi = wm.getConnectionInfo();
+        System.out.println("888999");
+        System.out.println("-------------" + String.valueOf(wi.getIpAddress()));
+        System.out.println("------------" + intToIp(wi.getIpAddress()));
 
         if (wm.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
             StringBuilder listinfo = new StringBuilder();
@@ -136,8 +140,10 @@ public class SelectServer extends AppCompatActivity {
                 ip_address = editText.getText().toString();
 
                 Intent intent = new Intent();
-                intent.putExtra("IP", URI.create("http://" + editText.getText().toString() + ":11311"));
-                intent.setClass(SelectServer.this, ControlActivity.class);
+//                intent.putExtra("IP", URI.create("http://" + editText.getText().toString() + ":11311"));
+                Collections.IP = editText.getText().toString();
+                System.out.println( "传值之前:  " + Collections.IP);
+                intent.setClass(SelectServer.this, ServerLogin.class);
                 startActivity(intent);
             }
         });

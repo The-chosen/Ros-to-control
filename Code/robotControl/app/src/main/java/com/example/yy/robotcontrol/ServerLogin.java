@@ -1,3 +1,5 @@
+
+
 package com.example.yy.robotcontrol;
 
 import android.content.Intent;
@@ -33,6 +35,13 @@ public class ServerLogin extends AppCompatActivity {
         //get the server's name
         final Intent intent = getIntent();
         String data = intent.getStringExtra("serverID");
+        String IP = intent.getStringExtra("IP");
+
+        System.out.println("IPPPP:" + IP);
+        if (Collections.IP == null) {
+            Collections.IP = IP;
+        }
+        System.out.println("C:!!" + Collections.IP);
         head_textView.setText(data);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -41,11 +50,17 @@ public class ServerLogin extends AppCompatActivity {
                 userName = edit_userName.getText().toString();
                 password = edit_password.getText().toString();
 
-                Shell shell = new Shell(intent.getStringExtra("IP"), userName, password);
+//                Shell shell = new Shell(intent.getStringExtra("IP"), userName, password);
 //                shell.execute("roscore");
+                Collections.USERNAME = userName;
+                Collections.PASSWORD = password;
 
                 Intent intent_toControl = new Intent();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("username", userName);
+//                bundle.putString("password", password);
                 intent_toControl.setClass(ServerLogin.this, ControlActivity.class);
+//                intent.putExtras(bundle);
                 startActivity(intent_toControl);
             }
         });

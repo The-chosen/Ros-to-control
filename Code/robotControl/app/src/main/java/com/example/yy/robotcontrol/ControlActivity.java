@@ -71,7 +71,8 @@ public class ControlActivity extends RosActivity {
 
 //    在onCreate之前就执行了
     protected ControlActivity() {
-        super("ros_test", "ros_test", URI.create("http://192.168.43.90:11311")); // 这里是ROS_MASTER_URI
+        super("ros_test", "ros_test", URI.create("http://" + Collections.IP + ":11311")); // 这里是ROS_MASTER_URI
+        System.out.println("after: " + Collections.IP);
     }
 
     @Override
@@ -252,13 +253,18 @@ public class ControlActivity extends RosActivity {
 //        } catch (Exception e) {
 //            System.out.println(e);
 //        }
+        Intent intent = getIntent();
+        String username = Collections.USERNAME;
+        String password = Collections.PASSWORD;
+
         try{
             JSch jsch=new JSch();
 
             String host=null;
 
-            Session session=jsch.getSession("yygx", "192.168.43.90", 22);
-            session.setPassword("681609qg");
+            System.out.println("Collection!!!: " + Collections.IP);
+            Session session=jsch.getSession(username, Collections.IP, 22);
+            session.setPassword(password);
             UserInfo ui = new MyUserInfo(){
                 public void showMessage(String message){
                 }
